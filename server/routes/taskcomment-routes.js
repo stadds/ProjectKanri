@@ -8,7 +8,6 @@ const {ObjectId} = require("mongoose").Types
  */
 module.exports = (router) => {
 	router.post("/api/task-comments", isAuth, async (req, res) => {
-		console.log(req.user)
 		try {
 			let comment = await TaskComment.create({
 				...req.body.comment,
@@ -23,7 +22,7 @@ module.exports = (router) => {
 					}
 				}
 			);
-			res.json({ comment, ...flash("Saved comment.", "success") }).end();
+			res.json({ comment: comment.toObject(), ...flash("Saved comment.", "success") }).end();
 		} catch (error) {
 			console.error(error);
 			serverError(res);
@@ -37,7 +36,6 @@ module.exports = (router) => {
 				body: req.body.body,
 				updatedAt: new Date()
 			}, { new: true });
-			console.log(update)
 			res.json(update).end();
 		} catch (error) {
 			console.error(error)
